@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function App() {
   const [eventos, setEventos] = useState([]);
@@ -9,6 +9,19 @@ export default function App() {
     data: "",
     status: "Em execução",
   });
+
+  // 🔥 Carregar dados salvos
+  useEffect(() => {
+    const dadosSalvos = localStorage.getItem("eventos");
+    if (dadosSalvos) {
+      setEventos(JSON.parse(dadosSalvos));
+    }
+  }, []);
+
+  // 🔥 Salvar sempre que mudar
+  useEffect(() => {
+    localStorage.setItem("eventos", JSON.stringify(eventos));
+  }, [eventos]);
 
   function adicionarEvento() {
     if (!form.nome || !form.equipamento || !form.data) return;
